@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+
+from yt_dlp import YoutubeDL, utils
+import pyperclip as clip
+import tomllib as toml
+import os, sys, argparse, subprocess
+
+DEFAULT_CONFIG_PATH = os.path.expanduser('~/.config/lslive/config.toml')
+
+class Logger:
+    def debug(self, msg):
+        if LOG_LEVEL > 2:
+            print(msg)
+    
+    def info(self, msg):
+        if LOG_LEVEL == 2:
+            print(msg)
+
+    def warning(self, msg):
+        if LOG_LEVEL > 0:
+            print(msg)
+
+    def error(self, msg):
+        if LOG_LEVEL > 0:
+            print(msg)
+
+YDL_OPTS = { 'logger': Logger(), }
+LOG_LEVEL = 0
+
+def get_title(info):
+    extractor = info.get('extractor', None)
+    if extractor == 'twitch:stream':
+        return info.get('description', None)
+    elif extractor == 'youtube':
+        return info.get('fulltitle', None)
+    else:
+        return info.get('title', None)
+
+
+def fetch_channels(links):
+    channel_info = []
+
+    print("Fetching channel info...")
+    with YoutubeDL(YDL_OPTS) as ydl:
+        for link in links:
+            try:
+                info = ydl.extract_info(link, download=False)
+                channel_info.append(info)
+            except utils.DownloadError:
+                pass
+
+    return channel_info
+
+
+def main():
+    global LOG_LEVEL
+
+    parser = argparse.ArgumentParser(
+        prog='lslive',
+        description='List livestreams from multiple streaming sites using yt-dlp'
+    )
+    parser.add_argument('-l', '--clip',
+                        action='store_true', 
+                        help="Copy chosen stream link to clipboard")
+    parser.add_argument('-w', '--mpv',
+                        action='store_true', 
+                        help="Open chosen stream in mpv")
+    parser.add_argument('-c', '--config',
+                        type=argparse.FileType('rb'),
+                        default=DEFAULT_CONFIG_PATH,
+                        help="Filepath of config file")
+    parser.add_argument('-v', '--verbose',
+                        action='count',
+                        default=0,
+                        help="Increase verbosity, up to 3. Values greater than 0 spawn mpv attached when --mpv is passed")
+
+    args = parser.parse_args()
+
+    LOG_LEVEL = args.verbose
+    config = toml.load(args.config)
+    links = [source['link'].format(channel) for source in config.values() for channel in source['channels']]
+    channel_info = fetch_channels(links)
+
+    if len(channel_info) == 0:
+        print("No channels live")
+        return
+
+    for i, info in enumerate(channel_info):
+        name = info.get('uploader', None)
+        title = get_title(info)
+        print(f"[{i}] {name}: {title}")
+
+    if not (args.clip or args.mpv):
+        return
+
+    i = int(input("Channel: "))
+    link = channel_info[i]['original_url']
+
+    if args.clip:
+        clip.copy(link)
+
+    if args.mpv:
+        if LOG_LEVEL > 0:
+            subprocess.run(['mpv', link])
+        else:
+            subprocess.Popen(['mpv', link], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
+if __name__ == '__main__':
+    main()
+

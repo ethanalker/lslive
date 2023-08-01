@@ -1,0 +1,13 @@
+[youtube]
+# Link to livestream, where {} is replaced with the channel tag
+link = 'https://youtube.com/@{}/live'
+# Channels, fills {} in link
+channels = [ 'ludwig' ]
+
+[twitch]
+link = 'https://twitch.tv/{}'
+channels = [ 'ludwig' ]
+
+#[your-title]
+#link = 'https://live.example.com/{}'
+#channels = [ 'ludwig' ]
