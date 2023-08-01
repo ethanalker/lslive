@@ -4,7 +4,9 @@ Simple python script using [yt-dlp](https://github.com/yt-dlp/yt-dlp) to list li
 
 ## Dependencies
 
-This project uses [yt-dlp](https://github.com/yt-dlp/yt-dlp), [pyperclip](https://github.com/asweigart/pyperclip), [argcomplete](https://github.com/kislyuk/argcomplete), and requires >=python3.11. Install with `pip install` or your system's package manager. 
+This project uses [yt-dlp](https://github.com/yt-dlp/yt-dlp) and requires >=python3.11. Install with `pip install` or your system's package manager. 
+
+Optionally, [pyperclip](https://github.com/asweigart/pyperclip) is used for clipboard access and [argcomplete](https://github.com/kislyuk/argcomplete) is used for shell completions.
 
 ## Install
 
