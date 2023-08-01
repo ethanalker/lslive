@@ -3,7 +3,7 @@
 from yt_dlp import YoutubeDL, utils
 import pyperclip as clip
 import tomllib as toml
-import os, sys, argparse, subprocess
+import os, sys, argparse, argcomplete, subprocess
 
 DEFAULT_CONFIG_PATH = os.path.expanduser('~/.config/lslive/config.toml')
 
@@ -74,6 +74,7 @@ def main():
                         default=0,
                         help="Increase verbosity, up to 3. Values greater than 0 spawn mpv attached when --mpv is passed")
 
+    argcomplete.autocomplete(parser)
     args = parser.parse_args()
 
     LOG_LEVEL = args.verbose

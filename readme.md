@@ -4,13 +4,15 @@ Simple python script using [yt-dlp](https://github.com/yt-dlp/yt-dlp) to list li
 
 ## Dependencies
 
-This project uses [yt-dlp](https://github.com/yt-dlp/yt-dlp), [pyperclip](https://github.com/asweigart/pyperclip), and requires >=python3.11. Install with `pip install` or your system's package manager. 
+This project uses [yt-dlp](https://github.com/yt-dlp/yt-dlp), [pyperclip](https://github.com/asweigart/pyperclip), [argcomplete](https://github.com/kislyuk/argcomplete), and requires >=python3.11. Install with `pip install` or your system's package manager. 
 
 ## Install
 
 Place `lslive` in your `$PATH` and give it executable permissions: `chmod a+x lslive`
 
 Copy `config.toml` to `~/.config/lslive/config.toml` and add your desired channels.
+
+For completions, see [argcomplete](https://github.com/kislyuk/argcomplete).
 
 ## Usage
 
