@@ -19,3 +19,7 @@ For completions, see [argcomplete](https://github.com/kislyuk/argcomplete).
 ## Usage
 
 Run `lslive --help`
+
+## Todo
+- Add a cache system for calls in quick succession
+- More robust error handling for fetch_channels (and generally)
