@@ -23,3 +23,4 @@ Run `lslive --help`
 ## Todo
 - Add a cache system for calls in quick succession
 - More robust error handling for fetch_channels (and generally)
+- Live youtube channels take a long time to fetch, see if there's a way to fetch less info
